@@ -9,7 +9,7 @@ interface BookingRequestBody {
   customer: {
     name: string;
     email: string;
-    phone?: string;
+    phone: string;
   };
 }
 
@@ -23,7 +23,8 @@ export async function POST(request: NextRequest) {
     !body.staffId ||
     !body.startTime ||
     !body.customer?.name ||
-    !body.customer?.email
+    !body.customer?.email ||
+    !body.customer?.phone
   ) {
     return NextResponse.json(
       { error: "serviceId, staffId, startTime und Kundendaten sind erforderlich" },

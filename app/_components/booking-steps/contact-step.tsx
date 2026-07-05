@@ -80,10 +80,12 @@ export function ContactStep({
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="phone" className="text-sm font-medium text-foreground">
-            Telefon (optional)
+            Telefon
           </label>
           <input
             id="phone"
+            type="tel"
+            required
             value={customer.phone}
             onChange={(e) => onChange({ ...customer, phone: e.target.value })}
             className="rounded-xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-accent"

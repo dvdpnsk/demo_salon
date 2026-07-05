@@ -74,7 +74,7 @@ model Customer {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  phone     String?
+  phone     String
   createdAt DateTime @default(now())
 
   bookings Booking[]
