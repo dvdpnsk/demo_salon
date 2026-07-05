@@ -55,6 +55,7 @@ export function BookingWizard({ services, staff }: BookingWizardProps) {
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [managementToken, setManagementToken] = useState<string | null>(null);
 
   const selectedService = useMemo(
     () => services.find((s) => s.id === serviceId) ?? null,
@@ -99,6 +100,7 @@ export function BookingWizard({ services, staff }: BookingWizardProps) {
         return;
       }
 
+      setManagementToken(data.managementToken);
       goTo("success", 1);
     } catch {
       setError("Verbindung fehlgeschlagen. Bitte versuch es erneut.");
@@ -188,7 +190,9 @@ export function BookingWizard({ services, staff }: BookingWizardProps) {
             />
           )}
 
-          {step === "success" && <SuccessStep />}
+          {step === "success" && (
+            <SuccessStep managementToken={managementToken} />
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
