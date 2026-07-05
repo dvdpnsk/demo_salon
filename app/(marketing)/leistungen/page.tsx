@@ -1,4 +1,4 @@
-import { ServiceCategories } from "../_components/service-categories";
+import { ServiceCategories } from "@/app/_components/service-categories";
 
 export default function Leistungen() {
   return (

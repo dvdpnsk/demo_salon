@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { BookingWizard } from "../_components/booking-wizard";
+import { BookingWizard } from "@/app/_components/booking-wizard";
 
 export default async function Buchen() {
   const [services, staff] = await Promise.all([

@@ -1,4 +1,4 @@
-import { WhatsappContact } from "../_components/whatsapp-contact";
+import { WhatsappContact } from "@/app/_components/whatsapp-contact";
 
 export default function Kontakt() {
   return (

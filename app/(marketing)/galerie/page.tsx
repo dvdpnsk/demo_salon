@@ -8,7 +8,7 @@ const images = [
   { label: "Styling", span: "" },
 ];
 
-import { Gallery } from "../_components/gallery";
+import { Gallery } from "@/app/_components/gallery";
 
 export default function Galerie() {
   return (

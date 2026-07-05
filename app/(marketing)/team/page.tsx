@@ -1,4 +1,4 @@
-import { TeamGrid } from "../_components/team-grid";
+import { TeamGrid } from "@/app/_components/team-grid";
 
 export default function Team() {
   return (

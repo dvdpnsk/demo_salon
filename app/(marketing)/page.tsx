@@ -1,6 +1,6 @@
-import { Hero } from "./_components/hero";
-import { Testimonial } from "./_components/testimonial";
-import { TeamCarousel } from "./_components/team-carousel";
+import { Hero } from "@/app/_components/hero";
+import { Testimonial } from "@/app/_components/testimonial";
+import { TeamCarousel } from "@/app/_components/team-carousel";
 
 
 
