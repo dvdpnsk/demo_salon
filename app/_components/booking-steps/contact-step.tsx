@@ -1,6 +1,7 @@
 "use client";
 
 import type { ServiceOption, CustomerInput } from "../booking-wizard";
+import { EMAIL_PATTERN, NAME_PATTERN, PHONE_PATTERN } from "@/lib/validation";
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
   weekday: "long",
@@ -60,6 +61,9 @@ export function ContactStep({
           <input
             id="name"
             required
+            pattern={NAME_PATTERN.source}
+            title="Bitte Vor- und Nachnamen eingeben (z. B. Anna Meyer)"
+            placeholder="Anna Meyer"
             value={customer.name}
             onChange={(e) => onChange({ ...customer, name: e.target.value })}
             className="rounded-xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-accent"
@@ -73,6 +77,9 @@ export function ContactStep({
             id="email"
             type="email"
             required
+            pattern={EMAIL_PATTERN.source}
+            title="Bitte eine gültige E-Mail-Adresse eingeben (z. B. name@beispiel.de)"
+            placeholder="name@beispiel.de"
             value={customer.email}
             onChange={(e) => onChange({ ...customer, email: e.target.value })}
             className="rounded-xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-accent"
@@ -86,6 +93,9 @@ export function ContactStep({
             id="phone"
             type="tel"
             required
+            pattern={PHONE_PATTERN.source}
+            title="Bitte eine gültige Telefonnummer eingeben (z. B. 0176 12345678 oder +49 176 12345678)"
+            placeholder="0176 12345678"
             value={customer.phone}
             onChange={(e) => onChange({ ...customer, phone: e.target.value })}
             className="rounded-xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-accent"

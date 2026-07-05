@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { isValidEmail, isValidName, isValidPhone } from "@/lib/validation";
 
 interface BookingRequestBody {
   serviceId: string;
@@ -28,6 +29,25 @@ export async function POST(request: NextRequest) {
   ) {
     return NextResponse.json(
       { error: "serviceId, staffId, startTime und Kundendaten sind erforderlich" },
+      { status: 400 }
+    );
+  }
+
+  if (!isValidName(body.customer.name)) {
+    return NextResponse.json(
+      { error: "Bitte einen gültigen Vor- und Nachnamen angeben." },
+      { status: 400 }
+    );
+  }
+  if (!isValidEmail(body.customer.email)) {
+    return NextResponse.json(
+      { error: "Bitte eine gültige E-Mail-Adresse angeben." },
+      { status: 400 }
+    );
+  }
+  if (!isValidPhone(body.customer.phone)) {
+    return NextResponse.json(
+      { error: "Bitte eine gültige Telefonnummer angeben." },
       { status: 400 }
     );
   }
