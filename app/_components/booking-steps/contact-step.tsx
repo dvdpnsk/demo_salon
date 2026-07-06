@@ -115,7 +115,7 @@ export function ContactStep({
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-foreground-muted hover:text-foreground"
+            className="text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
           >
             ← Zurück
           </button>

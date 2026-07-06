@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 const categories = ["Alle", "Haare", "Nägel", "Augenbrauen"];
@@ -27,6 +27,15 @@ export function Gallery() {
 
   const selectedImage = images.find((img) => img.id === selected);
 
+  useEffect(() => {
+    if (!selectedImage) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectedImage]);
+
   return (
     <div>
       <div className="flex gap-2 overflow-x-auto pb-2">
@@ -34,6 +43,7 @@ export function Gallery() {
           <button
             key={category}
             onClick={() => setActive(category)}
+            aria-pressed={active === category}
             className={`shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors ${
               active === category
                 ? "bg-accent text-white"
@@ -92,6 +102,9 @@ export function Gallery() {
               exit={{ opacity: 0, scale: 0.92 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={selectedImage.label}
               className="relative aspect-4/5 w-full max-w-md overflow-hidden rounded-3xl bg-surface"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,var(--accent-soft),transparent_60%),radial-gradient(circle_at_70%_80%,var(--accent),transparent_55%)]" />

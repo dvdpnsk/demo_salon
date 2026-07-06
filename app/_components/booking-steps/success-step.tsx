@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 
 interface SuccessStepProps {
@@ -31,21 +32,21 @@ export function SuccessStep({ managementToken }: SuccessStepProps) {
             zu stornieren — am besten jetzt merken oder als Lesezeichen
             speichern:
           </p>
-          <a
+          <Link
             href={`/termin/${managementToken}`}
             className="mt-3 inline-block break-all text-sm font-medium text-accent underline"
           >
             /termin/{managementToken}
-          </a>
+          </Link>
         </div>
       )}
 
-      <a
+      <Link
         href="/"
         className="mt-4 rounded-full bg-accent px-8 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
       >
         Zur Startseite
-      </a>
+      </Link>
     </div>
   );
 }

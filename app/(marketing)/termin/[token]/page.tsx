@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Dein Termin",
+  robots: { index: false, follow: false },
+};
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
   weekday: "long",

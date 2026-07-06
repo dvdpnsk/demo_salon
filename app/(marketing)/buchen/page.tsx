@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { BookingWizard } from "@/app/_components/booking-wizard";
+
+export const metadata: Metadata = {
+  title: "Termin buchen",
+  description:
+    "Sichere dir in wenigen Schritten deinen Wunschtermin bei Amara Studio — ganz ohne Anruf.",
+};
+
+export const dynamic = "force-dynamic";
 
 export default async function Buchen() {
   const [services, staff] = await Promise.all([

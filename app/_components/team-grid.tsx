@@ -72,7 +72,7 @@ export function TeamGrid({ members }: TeamGridProps) {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={member.imageUrl}
-                alt=""
+                alt={member.name}
                 className="h-full w-full object-cover"
               />
             )}

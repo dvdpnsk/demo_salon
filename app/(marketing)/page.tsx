@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Hero } from "@/app/_components/hero";
 import { Testimonial } from "@/app/_components/testimonial";
 import { TeamCarousel } from "@/app/_components/team-carousel";
+
+export const metadata: Metadata = {
+  title: "Beauty & Hair in Berlin",
+  description:
+    "Amara Studio: modernes Beauty-Studio für Haare, Nails und Brows in Berlin. Termine bequem online buchen.",
+};
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const staff = await prisma.staff.findMany({
@@ -53,12 +63,12 @@ export default async function Home() {
             Sichere dir in unter einer Minute deinen Wunschtermin — ganz ohne
             Anruf.
           </p>
-          <a
+          <Link
             href="/buchen"
             className="mt-8 inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
           >
             Termin buchen
-          </a>
+          </Link>
         </div>
       </section>
 

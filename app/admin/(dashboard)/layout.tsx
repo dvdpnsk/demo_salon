@@ -42,7 +42,7 @@ export default function AdminDashboardLayout({
           <form action={logout}>
             <button
               type="submit"
-              className="text-sm font-medium text-foreground-muted hover:text-foreground"
+              className="text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
             >
               Abmelden
             </button>

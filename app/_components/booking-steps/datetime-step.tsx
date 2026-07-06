@@ -107,6 +107,7 @@ export function DateTimeStep({
               key={day.toISOString()}
               type="button"
               onClick={() => setSelectedDate(day)}
+              aria-pressed={isActive}
               className={`flex shrink-0 flex-col items-center rounded-2xl border px-4 py-3 transition-colors ${
                 isActive
                   ? "border-accent bg-accent-soft"
@@ -125,13 +126,18 @@ export function DateTimeStep({
       </div>
 
       {loading ? (
-        <p className="text-sm text-foreground-muted">Lade freie Termine…</p>
+        <p className="text-sm text-foreground-muted" aria-live="polite">
+          Lade freie Termine…
+        </p>
       ) : mergedSlots.length === 0 ? (
-        <p className="text-sm text-foreground-muted">
+        <p className="text-sm text-foreground-muted" aria-live="polite">
           An diesem Tag ist leider nichts frei — probier einen anderen Tag.
         </p>
       ) : (
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+        <div
+          className="grid grid-cols-3 gap-3 sm:grid-cols-4"
+          aria-live="polite"
+        >
           {mergedSlots.map((slotOption) => {
             const isActive = selectedSlot?.time === slotOption.time;
             return (
@@ -139,6 +145,7 @@ export function DateTimeStep({
                 key={slotOption.time}
                 type="button"
                 onClick={() => onSelect(slotOption)}
+                aria-pressed={isActive}
                 className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
                     ? "border-accent bg-accent text-white"
@@ -155,7 +162,7 @@ export function DateTimeStep({
       <button
         type="button"
         onClick={onBack}
-        className="self-start text-sm font-medium text-foreground-muted hover:text-foreground"
+        className="self-start text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
       >
         ← Zurück
       </button>

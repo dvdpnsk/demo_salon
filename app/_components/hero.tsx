@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 
 const container: Variants = {
@@ -58,18 +59,18 @@ className="max-w-xl font-display text-4xl leading-[1.05] text-foreground sm:text
           </motion.p>
 
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
-            <a
+            <Link
               href="/buchen"
               className="rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
             >
               Termin buchen
-            </a>
-            <a
+            </Link>
+            <Link
               href="/leistungen"
               className="rounded-full border border-border px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-foreground"
             >
               Leistungen entdecken
-            </a>
+            </Link>
           </motion.div>
         </div>
 

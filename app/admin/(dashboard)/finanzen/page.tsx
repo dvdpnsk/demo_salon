@@ -266,7 +266,7 @@ export default async function FinanzenPage({
                   label="✕"
                   ariaLabel={`${cat.name} löschen`}
                   confirmMessage={`Kategorie "${cat.name}" wirklich löschen?`}
-                  className="text-foreground-muted hover:text-red-600"
+                  className="text-foreground-muted transition-colors hover:text-red-600"
                 />
               </form>
             </span>
@@ -274,7 +274,7 @@ export default async function FinanzenPage({
         </div>
         <form
           action={createExpenseCategory}
-          className="mt-4 flex max-w-md items-end gap-3"
+          className="mt-4 flex max-w-md flex-wrap items-end gap-3"
         >
           <div className="flex flex-1 flex-col gap-1.5">
             <label

@@ -4,6 +4,7 @@ import { fraunces, hankenGrotesk } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Admin — Amara Studio",
+  robots: { index: false, follow: false },
 };
 
 export default function AdminRootLayout({

@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import {
   ServiceCategories,
   type ServiceCategoryData,
 } from "@/app/_components/service-categories";
+
+export const metadata: Metadata = {
+  title: "Leistungen & Preise",
+  description:
+    "Alle Services im Überblick: Haare, Nägel, Augenbrauen & Wimpern und Pflege — transparente Preise, individuelle Beratung.",
+};
+
+export const dynamic = "force-dynamic";
 
 const CATEGORY_ORDER = ["HAARE", "NAILS", "BROWS", "PFLEGE"] as const;
 const CATEGORY_LABELS: Record<string, string> = {
@@ -53,12 +63,12 @@ export default async function Leistungen() {
         </div>
 
         <div className="mt-16 text-center">
-          <a
+          <Link
             href="/buchen"
             className="inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
           >
             Termin buchen
-          </a>
+          </Link>
         </div>
       </div>
     </main>

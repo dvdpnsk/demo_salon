@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 
 export interface TeamTeaserMember {
@@ -45,12 +46,12 @@ export function TeamCarousel({ members }: TeamCarouselProps) {
           <h2 className="mt-3 font-display text-4xl text-foreground">
             Menschen, die deinen Look verstehen.
           </h2>
-          <a
+          <Link
             href="/team"
             className="mt-4 inline-block text-sm font-medium text-foreground underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
           >
             Ganzes Team ansehen →
-          </a>
+          </Link>
         </div>
 
         <motion.div
@@ -72,7 +73,7 @@ export function TeamCarousel({ members }: TeamCarouselProps) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={member.imageUrl}
-                    alt=""
+                    alt={member.name}
                     className="h-full w-full object-cover"
                   />
                 )}

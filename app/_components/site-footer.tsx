@@ -43,12 +43,15 @@ export function SiteFooter() {
           <address className="flex flex-col gap-1 text-sm not-italic text-background/90">
             <span>Lindenstraße 14</span>
             <span>10969 Berlin</span>
-            <a href="tel:+493012345678" className="hover:text-accent-soft">
+            <a
+              href="tel:+493012345678"
+              className="transition-colors hover:text-accent-soft"
+            >
               030 123 456 78
             </a>
             <a
               href="mailto:hallo@amara-studio.de"
-              className="hover:text-accent-soft"
+              className="transition-colors hover:text-accent-soft"
             >
               hallo@amara-studio.de
             </a>
@@ -71,10 +74,16 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-muted-on-dark sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Amara Studio</span>
           <div className="flex gap-4">
-            <Link href="/impressum" className="hover:text-background">
+            <Link
+              href="/impressum"
+              className="transition-colors hover:text-background"
+            >
               Impressum
             </Link>
-            <Link href="/datenschutz" className="hover:text-background">
+            <Link
+              href="/datenschutz"
+              className="transition-colors hover:text-background"
+            >
               Datenschutz
             </Link>
           </div>

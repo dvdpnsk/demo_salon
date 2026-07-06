@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { WhatsappContact } from "@/app/_components/whatsapp-contact";
+
+export const metadata: Metadata = {
+  title: "Kontakt",
+  description:
+    "Adresse, Öffnungszeiten und Kontaktmöglichkeiten von Amara Studio in Berlin.",
+};
 
 export default function Kontakt() {
   return (
@@ -31,13 +38,13 @@ export default function Kontakt() {
               </p>
               <a
                 href="tel:+493012345678"
-                className="mt-1 block text-foreground hover:text-accent"
+                className="mt-1 block text-foreground transition-colors hover:text-accent"
               >
                 030 123 456 78
               </a>
               <a
                 href="mailto:hallo@amara-studio.de"
-                className="block text-foreground hover:text-accent"
+                className="block text-foreground transition-colors hover:text-accent"
               >
                 hallo@amara-studio.de
               </a>

@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { TeamGrid } from "@/app/_components/team-grid";
+
+export const metadata: Metadata = {
+  title: "Unser Team",
+  description:
+    "Lerne das Team von Amara Studio kennen — erfahrene Stylist:innen für Haare, Nails und Brows in Berlin.",
+};
+
+export const dynamic = "force-dynamic";
 
 export default async function Team() {
   const staff = await prisma.staff.findMany({

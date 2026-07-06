@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { deleteService } from "@/lib/actions/services";
 import { ConfirmSubmitButton } from "@/app/admin/_components/confirm-submit-button";
 
+export const dynamic = "force-dynamic";
+
 const CATEGORY_LABELS: Record<string, string> = {
   HAARE: "Haare",
   NAILS: "Nägel",
@@ -61,7 +63,7 @@ export default async function AdminServicesPage() {
                   <div className="flex items-center gap-4">
                     <Link
                       href={`/admin/services/${service.id}/edit`}
-                      className="text-sm font-medium text-foreground hover:text-accent"
+                      className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                     >
                       Bearbeiten
                     </Link>

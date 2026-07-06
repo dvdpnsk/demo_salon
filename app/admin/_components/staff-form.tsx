@@ -63,7 +63,7 @@ export function StaffForm({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={initial.imageUrl}
-            alt=""
+            alt="Aktuelles Profilfoto"
             className="h-24 w-24 rounded-full object-cover"
           />
         )}

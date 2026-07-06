@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { deleteStaff } from "@/lib/actions/staff";
 import { ConfirmSubmitButton } from "@/app/admin/_components/confirm-submit-button";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminTeamPage() {
   const staff = await prisma.staff.findMany({
     orderBy: { name: "asc" },
@@ -32,19 +34,19 @@ export default async function AdminTeamPage() {
             key={member.id}
             className="rounded-2xl border border-border bg-surface p-6"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 {member.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={member.imageUrl}
-                    alt=""
-                    className="h-12 w-12 rounded-full object-cover"
+                    alt={member.name}
+                    className="h-12 w-12 shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-12 w-12 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)]" />
+                  <div className="h-12 w-12 shrink-0 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)]" />
                 )}
-                <div>
+                <div className="min-w-0">
                   <h2 className="font-display text-lg text-foreground">
                     {member.name}
                   </h2>
@@ -56,7 +58,7 @@ export default async function AdminTeamPage() {
               <div className="flex shrink-0 gap-3">
                 <Link
                   href={`/admin/team/${member.id}/edit`}
-                  className="text-sm font-medium text-foreground hover:text-accent"
+                  className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                 >
                   Bearbeiten
                 </Link>

@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
   weekday: "short",
   day: "2-digit",

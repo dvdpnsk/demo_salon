@@ -37,6 +37,7 @@ export function ServiceStep({ services, selectedId, onSelect }: ServiceStepProps
                   key={service.id}
                   type="button"
                   onClick={() => onSelect(service.id)}
+                  aria-pressed={selectedId === service.id}
                   className={`flex items-center justify-between rounded-2xl border px-5 py-4 text-left transition-colors ${
                     selectedId === service.id
                       ? "border-accent bg-accent-soft"

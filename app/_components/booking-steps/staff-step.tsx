@@ -20,6 +20,7 @@ export function StaffStep({ staff, selectedId, onSelect, onBack }: StaffStepProp
         <button
           type="button"
           onClick={() => onSelect("any")}
+          aria-pressed={selectedId === "any"}
           className={`rounded-2xl border px-5 py-4 text-left transition-colors ${
             selectedId === "any"
               ? "border-accent bg-accent-soft"
@@ -37,6 +38,7 @@ export function StaffStep({ staff, selectedId, onSelect, onBack }: StaffStepProp
             key={member.id}
             type="button"
             onClick={() => onSelect(member.id)}
+            aria-pressed={selectedId === member.id}
             className={`rounded-2xl border px-5 py-4 text-left transition-colors ${
               selectedId === member.id
                 ? "border-accent bg-accent-soft"
@@ -52,7 +54,7 @@ export function StaffStep({ staff, selectedId, onSelect, onBack }: StaffStepProp
       <button
         type="button"
         onClick={onBack}
-        className="self-start text-sm font-medium text-foreground-muted hover:text-foreground"
+        className="self-start text-sm font-medium text-foreground-muted transition-colors hover:text-foreground"
       >
         ← Zurück
       </button>

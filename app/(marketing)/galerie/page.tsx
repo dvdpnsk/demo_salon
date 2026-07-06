@@ -1,14 +1,11 @@
-const images = [
-  { label: "Balayage", span: "sm:col-span-2" },
-  { label: "Updo", span: "" },
-  { label: "Nägel", span: "" },
-  { label: "Herrenschnitt", span: "" },
-  { label: "Brows", span: "sm:col-span-2" },
-  { label: "Coloration", span: "" },
-  { label: "Styling", span: "" },
-];
-
+import type { Metadata } from "next";
 import { Gallery } from "@/app/_components/gallery";
+
+export const metadata: Metadata = {
+  title: "Galerie",
+  description:
+    "Einblicke in die Arbeit von Amara Studio — Looks von dezent bis mutig.",
+};
 
 export default function Galerie() {
   return (
