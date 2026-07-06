@@ -6,6 +6,7 @@ import { ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
 const NAV_LINKS = [
   { href: "/admin", label: "Übersicht" },
   { href: "/admin/buchungen", label: "Buchungen" },
+  { href: "/admin/finanzen", label: "Finanzen" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/team", label: "Team" },
   { href: "/admin/arbeitszeiten", label: "Arbeitszeiten" },

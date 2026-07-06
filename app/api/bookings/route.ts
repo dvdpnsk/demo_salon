@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/app/generated/prisma/client";
-import { prisma } from "@/lib/prisma";
+import {
+  createBooking,
+  ServiceNotFoundError,
+  SlotUnavailableError,
+  StaffServiceMismatchError,
+} from "@/lib/booking";
 import { isValidEmail, isValidName, isValidPhone } from "@/lib/validation";
 
 interface BookingRequestBody {
@@ -13,8 +18,6 @@ interface BookingRequestBody {
     phone: string;
   };
 }
-
-class SlotUnavailableError extends Error {}
 
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as Partial<BookingRequestBody>;
@@ -57,79 +60,30 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Ungültige Startzeit" }, { status: 400 });
   }
 
-  const service = await prisma.service.findUnique({
-    where: { id: body.serviceId },
-  });
-  if (!service) {
-    return NextResponse.json(
-      { error: "Service nicht gefunden" },
-      { status: 404 }
-    );
-  }
-
-  const staffOffersService = await prisma.staffService.findUnique({
-    where: {
-      staffId_serviceId: { staffId: body.staffId, serviceId: body.serviceId },
-    },
-  });
-  if (!staffOffersService) {
-    return NextResponse.json(
-      { error: "Dieser Mitarbeiter bietet diesen Service nicht an" },
-      { status: 400 }
-    );
-  }
-
-  const endTime = new Date(
-    startTime.getTime() + service.durationMinutes * 60_000
-  );
-  const staffId = body.staffId;
-  const serviceId = body.serviceId;
-  const customerInput = body.customer;
-
   try {
-    const booking = await prisma.$transaction(
-      async (tx) => {
-        const conflict = await tx.booking.findFirst({
-          where: {
-            staffId,
-            status: "CONFIRMED",
-            startTime: { lt: endTime },
-            endTime: { gt: startTime },
-          },
-        });
-
-        if (conflict) {
-          throw new SlotUnavailableError();
-        }
-
-        const customer = await tx.customer.upsert({
-          where: { email: customerInput.email },
-          update: {
-            name: customerInput.name,
-            phone: customerInput.phone,
-          },
-          create: {
-            name: customerInput.name,
-            email: customerInput.email,
-            phone: customerInput.phone,
-          },
-        });
-
-        return tx.booking.create({
-          data: {
-            customerId: customer.id,
-            staffId,
-            serviceId,
-            startTime,
-            endTime,
-          },
-        });
-      },
-      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
-    );
+    const booking = await createBooking({
+      serviceId: body.serviceId,
+      staffId: body.staffId,
+      startTime,
+      customer: body.customer,
+    });
 
     return NextResponse.json(booking, { status: 201 });
   } catch (error) {
+    if (error instanceof ServiceNotFoundError) {
+      return NextResponse.json(
+        { error: "Service nicht gefunden" },
+        { status: 404 }
+      );
+    }
+
+    if (error instanceof StaffServiceMismatchError) {
+      return NextResponse.json(
+        { error: "Dieser Mitarbeiter bietet diesen Service nicht an" },
+        { status: 400 }
+      );
+    }
+
     if (error instanceof SlotUnavailableError) {
       return NextResponse.json(
         { error: "Dieser Termin ist leider nicht mehr verfügbar." },

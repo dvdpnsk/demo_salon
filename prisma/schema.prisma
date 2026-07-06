@@ -97,3 +97,22 @@ model Booking {
 
   @@index([staffId, startTime])
 }
+
+model ExpenseCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  expenses Expense[]
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  categoryId  String
+  note        String?
+  amountCents Int
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  category ExpenseCategory @relation(fields: [categoryId], references: [id])
+}
