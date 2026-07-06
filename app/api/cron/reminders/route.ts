@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendBookingReminderEmail } from "@/lib/email";
+import {
+  addDaysToDateKey,
+  getZonedDateKey,
+  getZonedDayStart,
+} from "@/lib/timezone";
 
 // Läuft einmal täglich (siehe vercel.json) und verschickt Erinnerungsmails
-// für alle bestätigten Termine, die morgen (Kalendertag, Server-Zeitzone)
-// stattfinden. reminderSentAt verhindert Doppelversand.
+// für alle bestätigten Termine, die morgen (Kalendertag in der
+// Salon-Zeitzone, nicht der Server-Zeitzone) stattfinden. reminderSentAt
+// verhindert Doppelversand.
 export async function GET(request: NextRequest) {
   if (process.env.CRON_SECRET) {
     const authHeader = request.headers.get("authorization");
@@ -13,11 +19,10 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const tomorrowStart = new Date();
-  tomorrowStart.setHours(0, 0, 0, 0);
-  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
-  const dayAfterTomorrowStart = new Date(tomorrowStart);
-  dayAfterTomorrowStart.setDate(dayAfterTomorrowStart.getDate() + 1);
+  const todayKey = getZonedDateKey(new Date());
+  const tomorrowKey = addDaysToDateKey(todayKey, 1);
+  const tomorrowStart = getZonedDayStart(tomorrowKey);
+  const dayAfterTomorrowStart = getZonedDayStart(addDaysToDateKey(tomorrowKey, 1));
 
   const bookings = await prisma.booking.findMany({
     where: {

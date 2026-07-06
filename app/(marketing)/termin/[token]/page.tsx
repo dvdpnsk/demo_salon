@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { SALON_TIMEZONE } from "@/lib/timezone";
 
 export const metadata: Metadata = {
   title: "Dein Termin",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   weekday: "long",
   day: "2-digit",
   month: "2-digit",

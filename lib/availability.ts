@@ -9,7 +9,7 @@ export interface BookedRange {
 }
 
 interface GetAvailableSlotsParams {
-  date: Date;
+  dayStart: Date;
   durationMinutes: number;
   workingHours: WorkingHoursForDay | null;
   existingBookings: BookedRange[];
@@ -19,7 +19,7 @@ interface GetAvailableSlotsParams {
 }
 
 export function getAvailableSlots({
-  date,
+  dayStart,
   durationMinutes,
   workingHours,
   existingBookings,
@@ -28,9 +28,6 @@ export function getAvailableSlots({
   now = new Date(),
 }: GetAvailableSlotsParams): Date[] {
   if (!workingHours) return [];
-
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
 
   const earliestStart = new Date(now.getTime() + minLeadMinutes * 60_000);
   const slots: Date[] = [];

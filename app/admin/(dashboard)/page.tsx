@@ -1,8 +1,16 @@
 import { prisma } from "@/lib/prisma";
+import {
+  addDaysToDateKey,
+  getWeekdayForDateKey,
+  getZonedDateKey,
+  getZonedDayStart,
+  SALON_TIMEZONE,
+} from "@/lib/timezone";
 
 export const dynamic = "force-dynamic";
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   weekday: "short",
   day: "2-digit",
   month: "2-digit",
@@ -12,15 +20,13 @@ const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
 
 export default async function AdminOverviewPage() {
   const now = new Date();
-  const startOfToday = new Date(now);
-  startOfToday.setHours(0, 0, 0, 0);
-  const endOfToday = new Date(startOfToday);
-  endOfToday.setDate(endOfToday.getDate() + 1);
+  const todayKey = getZonedDateKey(now);
+  const startOfToday = getZonedDayStart(todayKey);
+  const endOfToday = getZonedDayStart(addDaysToDateKey(todayKey, 1));
 
-  const startOfWeek = new Date(startOfToday);
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(endOfWeek.getDate() + 7);
+  const weekStartKey = addDaysToDateKey(todayKey, -getWeekdayForDateKey(todayKey));
+  const startOfWeek = getZonedDayStart(weekStartKey);
+  const endOfWeek = getZonedDayStart(addDaysToDateKey(weekStartKey, 7));
 
   const [todayCount, weekCount, customerCount, upcomingBookings] =
     await Promise.all([

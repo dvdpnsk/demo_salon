@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { SALON_TIMEZONE } from "@/lib/timezone";
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -8,6 +9,7 @@ const FROM = process.env.EMAIL_FROM ?? "Amara Studio <onboarding@resend.dev>";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   weekday: "long",
   day: "2-digit",
   month: "2-digit",
@@ -15,6 +17,7 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("de-DE", {
 });
 
 const TIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   hour: "2-digit",
   minute: "2-digit",
 });

@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAvailableSlots } from "@/lib/availability";
+import {
+  addDaysToDateKey,
+  getWeekdayForDateKey,
+  getZonedDayStart,
+} from "@/lib/timezone";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -15,8 +20,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const date = new Date(dateParam);
-  if (Number.isNaN(date.getTime())) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
     return NextResponse.json({ error: "Ungültiges Datum" }, { status: 400 });
   }
 
@@ -41,11 +45,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json([]);
   }
 
-  const weekday = date.getDay();
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
-  const dayEnd = new Date(dayStart);
-  dayEnd.setDate(dayEnd.getDate() + 1);
+  const weekday = getWeekdayForDateKey(dateParam);
+  const dayStart = getZonedDayStart(dateParam);
+  const dayEnd = getZonedDayStart(addDaysToDateKey(dateParam, 1));
 
   const results = await Promise.all(
     staffList.map(async (staff) => {
@@ -64,7 +66,7 @@ export async function GET(request: NextRequest) {
       ]);
 
       const slots = getAvailableSlots({
-        date,
+        dayStart,
         durationMinutes: service.durationMinutes,
         workingHours: workingHours
           ? {

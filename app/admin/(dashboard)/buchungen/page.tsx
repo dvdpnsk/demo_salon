@@ -3,8 +3,10 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { CURRENCY_FORMATTER } from "@/lib/format";
 import { ConfirmSubmitButton } from "@/app/admin/_components/confirm-submit-button";
+import { SALON_TIMEZONE } from "@/lib/timezone";
 
 const DATETIME_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   weekday: "short",
   day: "2-digit",
   month: "2-digit",

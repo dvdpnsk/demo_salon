@@ -8,6 +8,14 @@ import {
 import { CURRENCY_FORMATTER } from "@/lib/format";
 import { ConfirmSubmitButton } from "@/app/admin/_components/confirm-submit-button";
 import { ExpenseList } from "@/app/admin/_components/expense-list";
+import {
+  addDaysToDateKey,
+  getMonthBoundsKeys,
+  getWeekdayForDateKey,
+  getZonedDateKey,
+  getZonedDayStart,
+  SALON_TIMEZONE,
+} from "@/lib/timezone";
 
 const PERIODS = [
   { value: "today", label: "Heute" },
@@ -15,43 +23,45 @@ const PERIODS = [
   { value: "month", label: "Dieser Monat" },
 ] as const;
 
-function getRange(period: string, from?: string, to?: string) {
-  if (from && to) {
-    const start = new Date(from);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(to);
-    end.setHours(0, 0, 0, 0);
-    end.setDate(end.getDate() + 1);
+const DATE_KEY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
-    if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
-      return { start, end };
-    }
+function getRange(period: string, from?: string, to?: string) {
+  if (from && to && DATE_KEY_PATTERN.test(from) && DATE_KEY_PATTERN.test(to)) {
+    return {
+      start: getZonedDayStart(from),
+      end: getZonedDayStart(addDaysToDateKey(to, 1)),
+    };
   }
 
-  const now = new Date();
-  const start = new Date(now);
-  start.setHours(0, 0, 0, 0);
+  const todayKey = getZonedDateKey(new Date());
 
   if (period === "today") {
-    const end = new Date(start);
-    end.setDate(end.getDate() + 1);
-    return { start, end };
+    return {
+      start: getZonedDayStart(todayKey),
+      end: getZonedDayStart(addDaysToDateKey(todayKey, 1)),
+    };
   }
 
   if (period === "week") {
-    start.setDate(start.getDate() - start.getDay());
-    const end = new Date(start);
-    end.setDate(end.getDate() + 7);
-    return { start, end };
+    const weekStartKey = addDaysToDateKey(
+      todayKey,
+      -getWeekdayForDateKey(todayKey)
+    );
+    return {
+      start: getZonedDayStart(weekStartKey),
+      end: getZonedDayStart(addDaysToDateKey(weekStartKey, 7)),
+    };
   }
 
-  start.setDate(1);
-  const end = new Date(start);
-  end.setMonth(end.getMonth() + 1);
-  return { start, end };
+  const { start: monthStartKey, nextMonthStart } = getMonthBoundsKeys(todayKey);
+  return {
+    start: getZonedDayStart(monthStartKey),
+    end: getZonedDayStart(nextMonthStart),
+  };
 }
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("de-DE", {
+  timeZone: SALON_TIMEZONE,
   day: "2-digit",
   month: "2-digit",
   year: "numeric",

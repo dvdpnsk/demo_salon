@@ -9,6 +9,7 @@ import {
   StaffServiceMismatchError,
 } from "@/lib/booking";
 import { isValidEmail, isValidName, isValidPhone } from "@/lib/validation";
+import { parseZonedDateTimeLocal } from "@/lib/timezone";
 
 export async function createBookingByAdmin(formData: FormData) {
   const serviceId = formData.get("serviceId");
@@ -39,8 +40,8 @@ export async function createBookingByAdmin(formData: FormData) {
     throw new Error("Bitte eine gültige Telefonnummer angeben.");
   }
 
-  const startTime = new Date(startTimeRaw);
-  if (Number.isNaN(startTime.getTime())) {
+  const startTime = parseZonedDateTimeLocal(startTimeRaw);
+  if (!startTime || Number.isNaN(startTime.getTime())) {
     throw new Error("Ungültige Startzeit.");
   }
 
