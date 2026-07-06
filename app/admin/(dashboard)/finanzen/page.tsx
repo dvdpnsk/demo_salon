@@ -69,6 +69,12 @@ export default async function FinanzenPage({
     periodParam === "today" || periodParam === "week" ? periodParam : "month";
   const isCustomRange = Boolean(from && to);
   const { start, end } = getRange(period, from, to);
+  const inclusiveEnd = new Date(end);
+  inclusiveEnd.setDate(inclusiveEnd.getDate() - 1);
+  const rangeLabel =
+    start.getTime() === inclusiveEnd.getTime()
+      ? DATE_FORMATTER.format(start)
+      : `${DATE_FORMATTER.format(start)} – ${DATE_FORMATTER.format(inclusiveEnd)}`;
 
   const [bookings, expenses, categories] = await Promise.all([
     prisma.booking.findMany({
@@ -195,7 +201,8 @@ export default async function FinanzenPage({
 
       <div>
         <h2 className="font-display text-xl text-foreground">
-          Einnahmen im Zeitraum
+          Einnahmen im Zeitraum{" "}
+          <span className="text-foreground-muted">({rangeLabel})</span>
         </h2>
         <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-surface">
           <table className="w-full min-w-140 text-left text-sm">
@@ -378,6 +385,7 @@ export default async function FinanzenPage({
       </div>
 
       <ExpenseList
+        rangeLabel={rangeLabel}
         expenses={expenses.map((expense) => ({
           id: expense.id,
           date: expense.date.toISOString(),

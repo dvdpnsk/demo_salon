@@ -27,9 +27,14 @@ interface Category {
 interface ExpenseListProps {
   expenses: ExpenseItem[];
   categories: Category[];
+  rangeLabel: string;
 }
 
-export function ExpenseList({ expenses, categories }: ExpenseListProps) {
+export function ExpenseList({
+  expenses,
+  categories,
+  rangeLabel,
+}: ExpenseListProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     null
   );
@@ -46,7 +51,8 @@ export function ExpenseList({ expenses, categories }: ExpenseListProps) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="font-display text-xl text-foreground">
-          Ausgaben im Zeitraum
+          Ausgaben im Zeitraum{" "}
+          <span className="text-foreground-muted">({rangeLabel})</span>
         </h2>
         <div className="flex flex-wrap gap-2">
           <button
