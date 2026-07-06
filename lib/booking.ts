@@ -1,5 +1,6 @@
 import { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { sendBookingConfirmationEmail } from "@/lib/email";
 
 export class SlotUnavailableError extends Error {}
 export class ServiceNotFoundError extends Error {}
@@ -30,7 +31,7 @@ export async function createBooking({
     startTime.getTime() + service.durationMinutes * 60_000
   );
 
-  return prisma.$transaction(
+  const booking = await prisma.$transaction(
     async (tx) => {
       const conflict = await tx.booking.findFirst({
         where: {
@@ -63,8 +64,25 @@ export async function createBooking({
           startTime,
           endTime,
         },
+        include: { service: true, staff: true, customer: true },
       });
     },
     { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
   );
+
+  try {
+    await sendBookingConfirmationEmail({
+      customerName: booking.customer.name,
+      customerEmail: booking.customer.email,
+      serviceName: booking.service.name,
+      staffName: booking.staff.name,
+      startTime: booking.startTime,
+      priceCents: booking.service.priceCents,
+      managementToken: booking.managementToken,
+    });
+  } catch (error) {
+    console.error("[booking] Bestätigungsmail konnte nicht gesendet werden:", error);
+  }
+
+  return booking;
 }
