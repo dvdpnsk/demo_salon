@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const categories = ["Alle", "Haare", "Nails", "Brows"];
+const categories = ["Alle", "Haare", "Nägel", "Augenbrauen"];
 
 const images = [
   { id: 1, label: "Balayage", category: "Haare", height: "h-72" },
-  { id: 2, label: "Updo", category: "Haare", height: "h-56" },
-  { id: 3, label: "Gel-Nails", category: "Nails", height: "h-64" },
-  { id: 4, label: "Brow Lamination", category: "Brows", height: "h-52" },
+  { id: 2, label: "Hochsteckfrisur", category: "Haare", height: "h-56" },
+  { id: 3, label: "Gel-Nägel", category: "Nägel", height: "h-64" },
+  { id: 4, label: "Augenbrauenlaminierung", category: "Augenbrauen", height: "h-52" },
   { id: 5, label: "Coloration", category: "Haare", height: "h-80" },
-  { id: 6, label: "Nail Art", category: "Nails", height: "h-60" },
-  { id: 7, label: "Wimpernlifting", category: "Brows", height: "h-64" },
+  { id: 6, label: "Nageldesign", category: "Nägel", height: "h-60" },
+  { id: 7, label: "Wimpernlifting", category: "Augenbrauen", height: "h-64" },
   { id: 8, label: "Herrenschnitt", category: "Haare", height: "h-56" },
 ];
 

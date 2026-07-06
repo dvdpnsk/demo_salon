@@ -12,9 +12,9 @@ const services = [
   { key: "foehnen-styling", name: "Föhnen & Styling", category: ServiceCategory.HAARE, durationMinutes: 30, priceCents: 2500 },
   { key: "maniküre", name: "Maniküre klassisch", category: ServiceCategory.NAILS, durationMinutes: 45, priceCents: 3500 },
   { key: "gel-modellage", name: "Gel-Modellage", category: ServiceCategory.NAILS, durationMinutes: 75, priceCents: 5500 },
-  { key: "nail-art", name: "Nail Art (Aufpreis)", category: ServiceCategory.NAILS, durationMinutes: 15, priceCents: 1000 },
+  { key: "nail-art", name: "Nageldesign (Aufpreis)", category: ServiceCategory.NAILS, durationMinutes: 15, priceCents: 1000 },
   { key: "brows-zupfen", name: "Augenbrauen zupfen", category: ServiceCategory.BROWS, durationMinutes: 15, priceCents: 1500 },
-  { key: "brow-lamination", name: "Brow Lamination", category: ServiceCategory.BROWS, durationMinutes: 45, priceCents: 3500 },
+  { key: "brow-lamination", name: "Augenbrauenlaminierung", category: ServiceCategory.BROWS, durationMinutes: 45, priceCents: 3500 },
   { key: "wimpernlifting", name: "Wimpernlifting", category: ServiceCategory.BROWS, durationMinutes: 60, priceCents: 4500 },
   { key: "kopfhaut", name: "Kopfhautbehandlung", category: ServiceCategory.PFLEGE, durationMinutes: 30, priceCents: 3000 },
   { key: "haarkur", name: "Intensiv-Haarkur", category: ServiceCategory.PFLEGE, durationMinutes: 20, priceCents: 2000 },
@@ -40,7 +40,7 @@ const staffMembers = [
   {
     key: "amara",
     name: "Amara Keller",
-    role: "Hair Styling & Schnitt",
+    role: "Haarstyling & Schnitt",
     bio: "Schneidet seit über zehn Jahren und findet für jede Kopfform den passenden Schnitt — präzise, aber nie steif.",
     serviceKeys: [
       "schnitt-damen",
@@ -58,8 +58,8 @@ const staffMembers = [
   {
     key: "nora",
     name: "Nora Islam",
-    role: "Nails & Brows",
-    bio: "Präzision im Detail — von natürlichen Brows bis zu aufwendigem Nail-Art, immer mit Blick fürs Ganze.",
+    role: "Nägel & Augenbrauen",
+    bio: "Präzision im Detail — von natürlichen Augenbrauen bis zu aufwendigem Nageldesign, immer mit Blick fürs Ganze.",
     serviceKeys: [
       "maniküre",
       "gel-modellage",

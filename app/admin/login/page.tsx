@@ -32,7 +32,9 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm rounded-3xl border border-border bg-surface p-8">
-        <h1 className="font-display text-2xl text-foreground">Admin-Login</h1>
+        <h1 className="font-display text-2xl text-foreground">
+          Admin-Anmeldung
+        </h1>
         <p className="mt-2 text-sm text-foreground-muted">
           Nur für die Salon-Leitung.
         </p>

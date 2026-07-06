@@ -1,7 +1,7 @@
 const images = [
   { label: "Balayage", span: "sm:col-span-2" },
   { label: "Updo", span: "" },
-  { label: "Nails", span: "" },
+  { label: "Nägel", span: "" },
   { label: "Herrenschnitt", span: "" },
   { label: "Brows", span: "sm:col-span-2" },
   { label: "Coloration", span: "" },

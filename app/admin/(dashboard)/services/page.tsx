@@ -5,8 +5,8 @@ import { ConfirmSubmitButton } from "@/app/admin/_components/confirm-submit-butt
 
 const CATEGORY_LABELS: Record<string, string> = {
   HAARE: "Haare",
-  NAILS: "Nails",
-  BROWS: "Brows & Lashes",
+  NAILS: "Nägel",
+  BROWS: "Augenbrauen & Wimpern",
   PFLEGE: "Pflege",
 };
 

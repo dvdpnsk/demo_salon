@@ -7,8 +7,8 @@ import {
 const CATEGORY_ORDER = ["HAARE", "NAILS", "BROWS", "PFLEGE"] as const;
 const CATEGORY_LABELS: Record<string, string> = {
   HAARE: "Haare",
-  NAILS: "Nails",
-  BROWS: "Brows & Lashes",
+  NAILS: "Nägel",
+  BROWS: "Augenbrauen & Wimpern",
   PFLEGE: "Pflege",
 };
 

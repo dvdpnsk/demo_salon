@@ -4,8 +4,8 @@ import type { ServiceOption } from "../booking-wizard";
 
 const CATEGORY_LABELS: Record<string, string> = {
   HAARE: "Haare",
-  NAILS: "Nails",
-  BROWS: "Brows & Lashes",
+  NAILS: "Nägel",
+  BROWS: "Augenbrauen & Wimpern",
   PFLEGE: "Pflege",
 };
 
