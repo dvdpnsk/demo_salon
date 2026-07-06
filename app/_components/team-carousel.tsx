@@ -2,23 +2,13 @@
 
 import { motion, type Variants } from "motion/react";
 
-const team = [
-  {
-    name: "Lena Vogt",
-    role: "Salonleitung & Coloration",
-    bio: "Farbspezialistin mit einem Gespür für natürliche Nuancen — bei ihr wird aus einer Idee ein Farbkonzept.",
-  },
-  {
-    name: "Amara Keller",
-    role: "Hair Styling & Schnitt",
-    bio: "Schneidet seit über zehn Jahren und findet für jede Kopfform den passenden Schnitt.",
-  },
-  {
-    name: "Nora Islam",
-    role: "Nails & Brows",
-    bio: "Präzision im Detail — von natürlichen Brows bis zu aufwendigem Nail-Art.",
-  },
-];
+export interface TeamTeaserMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string | null;
+  imageUrl: string | null;
+}
 
 const container: Variants = {
   hidden: {},
@@ -40,7 +30,11 @@ const card: Variants = {
   },
 };
 
-export function TeamCarousel() {
+interface TeamCarouselProps {
+  members: TeamTeaserMember[];
+}
+
+export function TeamCarousel({ members }: TeamCarouselProps) {
   return (
     <section className="px-6 py-28">
       <div className="mx-auto max-w-6xl">
@@ -49,15 +43,14 @@ export function TeamCarousel() {
             Unser Team
           </span>
           <h2 className="mt-3 font-display text-4xl text-foreground">
-  Menschen, die deinen Look verstehen.
-</h2>
-<a
-  href="/team"
-  className="mt-4 inline-block text-sm font-medium text-foreground underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
->
-  Ganzes Team ansehen →
-</a>
-
+            Menschen, die deinen Look verstehen.
+          </h2>
+          <a
+            href="/team"
+            className="mt-4 inline-block text-sm font-medium text-foreground underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+          >
+            Ganzes Team ansehen →
+          </a>
         </div>
 
         <motion.div
@@ -68,13 +61,22 @@ export function TeamCarousel() {
           style={{ perspective: 1000 }}
           className="grid grid-cols-1 gap-8 sm:grid-cols-3"
         >
-          {team.map((member) => (
+          {members.map((member) => (
             <motion.div
-              key={member.name}
+              key={member.id}
               variants={card}
               className="flex flex-col gap-5 rounded-3xl border border-border bg-surface p-8 sm:p-10"
             >
-              <div className="h-28 w-28 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)]" />
+              <div className="h-28 w-28 overflow-hidden rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)]">
+                {member.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={member.imageUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                )}
+              </div>
               <div>
                 <h3 className="font-display text-2xl text-foreground">
                   {member.name}
@@ -83,9 +85,11 @@ export function TeamCarousel() {
                   {member.role}
                 </p>
               </div>
-              <p className="text-sm leading-relaxed text-foreground-muted">
-                {member.bio}
-              </p>
+              {member.bio && (
+                <p className="text-sm leading-relaxed text-foreground-muted">
+                  {member.bio}
+                </p>
+              )}
             </motion.div>
           ))}
         </motion.div>

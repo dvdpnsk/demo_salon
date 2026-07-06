@@ -2,32 +2,14 @@
 
 import { motion, type Variants } from "motion/react";
 
-const team = [
-  {
-    name: "Lena Vogt",
-    role: "Salonleitung & Coloration",
-    bio: "Seit über zwölf Jahren im Handwerk zu Hause. Lena leitet das Studio und ist auf komplexe Coloration-Techniken spezialisiert.",
-    specialties: ["Balayage", "Farbkorrektur", "Beratung"],
-  },
-  {
-    name: "Amara Keller",
-    role: "Hair Styling & Schnitt",
-    bio: "Schneidet seit über zehn Jahren und findet für jede Kopfform den passenden Schnitt — präzise, aber nie steif.",
-    specialties: ["Damenschnitt", "Styling", "Hochsteckfrisuren"],
-  },
-  {
-    name: "Nora Islam",
-    role: "Nails & Brows",
-    bio: "Präzision im Detail — von natürlichen Brows bis zu aufwendigem Nail-Art, immer mit Blick fürs Ganze.",
-    specialties: ["Gel-Modellage", "Brow Lamination", "Nail Art"],
-  },
-  {
-    name: "Jonas Reimer",
-    role: "Herrenschnitt & Bartpflege",
-    bio: "Klassisch geschult, modern im Blick — für den Schnitt, der auch in zwei Wochen noch sitzt.",
-    specialties: ["Herrenschnitt", "Bartpflege", "Fade"],
-  },
-];
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string | null;
+  imageUrl: string | null;
+  specialties: string[];
+}
 
 const cardVariants: Variants = {
   hidden: {},
@@ -66,12 +48,16 @@ const tagsVariants: Variants = {
   visible: { opacity: 1, transition: { duration: 0.5, delay: 0.35 } },
 };
 
-export function TeamGrid() {
+interface TeamGridProps {
+  members: TeamMember[];
+}
+
+export function TeamGrid({ members }: TeamGridProps) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-      {team.map((member) => (
+      {members.map((member) => (
         <motion.div
-          key={member.name}
+          key={member.id}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}
@@ -80,8 +66,17 @@ export function TeamGrid() {
         >
           <motion.div
             variants={avatarVariants}
-            className="h-16 w-16 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)] sm:h-24 sm:w-24"
-          />
+            className="h-16 w-16 overflow-hidden rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)] sm:h-24 sm:w-24"
+          >
+            {member.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={member.imageUrl}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            )}
+          </motion.div>
           <motion.div variants={nameVariants}>
             <h2 className="font-display text-xl text-foreground sm:text-2xl">
               {member.name}
@@ -90,16 +85,15 @@ export function TeamGrid() {
               {member.role}
             </p>
           </motion.div>
-          <motion.p
-            variants={bioVariants}
-            className="text-sm leading-relaxed text-foreground-muted"
-          >
-            {member.bio}
-          </motion.p>
-          <motion.div
-            variants={tagsVariants}
-            className="flex flex-wrap gap-2"
-          >
+          {member.bio && (
+            <motion.p
+              variants={bioVariants}
+              className="text-sm leading-relaxed text-foreground-muted"
+            >
+              {member.bio}
+            </motion.p>
+          )}
+          <motion.div variants={tagsVariants} className="flex flex-wrap gap-2">
             {member.specialties.map((tag) => (
               <span
                 key={tag}

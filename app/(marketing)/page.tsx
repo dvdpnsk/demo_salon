@@ -1,11 +1,22 @@
+import { prisma } from "@/lib/prisma";
 import { Hero } from "@/app/_components/hero";
 import { Testimonial } from "@/app/_components/testimonial";
 import { TeamCarousel } from "@/app/_components/team-carousel";
 
+export default async function Home() {
+  const staff = await prisma.staff.findMany({
+    orderBy: { name: "asc" },
+    take: 3,
+  });
 
+  const teamTeaser = staff.map((member) => ({
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    bio: member.bio,
+    imageUrl: member.imageUrl,
+  }));
 
-export default function Home() {
-  
   return (
     <>
       <Hero />
@@ -29,7 +40,7 @@ export default function Home() {
         </div>
       </section>
 
-      <TeamCarousel />
+      <TeamCarousel members={teamTeaser} />
 
       <Testimonial />
 

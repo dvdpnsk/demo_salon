@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { put } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
 
 function parseStaffInput(formData: FormData) {
@@ -29,10 +30,26 @@ function parseStaffInput(formData: FormData) {
   };
 }
 
+async function uploadPhotoIfProvided(formData: FormData) {
+  const photo = formData.get("photo");
+  if (!(photo instanceof File) || photo.size === 0) {
+    return undefined;
+  }
+
+  const blob = await put(`staff/${crypto.randomUUID()}-${photo.name}`, photo, {
+    access: "public",
+  });
+
+  return blob.url;
+}
+
 export async function createStaff(formData: FormData) {
   const { serviceIds, ...data } = parseStaffInput(formData);
+  const imageUrl = await uploadPhotoIfProvided(formData);
 
-  const staff = await prisma.staff.create({ data });
+  const staff = await prisma.staff.create({
+    data: { ...data, imageUrl: imageUrl ?? null },
+  });
 
   if (serviceIds.length > 0) {
     await prisma.staffService.createMany({
@@ -46,8 +63,13 @@ export async function createStaff(formData: FormData) {
 
 export async function updateStaff(id: string, formData: FormData) {
   const { serviceIds, ...data } = parseStaffInput(formData);
+  const imageUrl = await uploadPhotoIfProvided(formData);
 
-  await prisma.staff.update({ where: { id }, data });
+  await prisma.staff.update({
+    where: { id },
+    data: { ...data, ...(imageUrl ? { imageUrl } : {}) },
+  });
+
   await prisma.staffService.deleteMany({ where: { staffId: id } });
 
   if (serviceIds.length > 0) {

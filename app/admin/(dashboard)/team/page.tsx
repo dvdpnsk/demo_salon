@@ -33,13 +33,25 @@ export default async function AdminTeamPage() {
             className="rounded-2xl border border-border bg-surface p-6"
           >
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="font-display text-lg text-foreground">
-                  {member.name}
-                </h2>
-                <p className="text-sm text-foreground-muted">
-                  {member.role}
-                </p>
+              <div className="flex items-center gap-3">
+                {member.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={member.imageUrl}
+                    alt=""
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="h-12 w-12 rounded-full bg-[radial-gradient(circle_at_35%_30%,var(--accent-soft),transparent_65%),radial-gradient(circle_at_70%_75%,var(--accent),transparent_60%)]" />
+                )}
+                <div>
+                  <h2 className="font-display text-lg text-foreground">
+                    {member.name}
+                  </h2>
+                  <p className="text-sm text-foreground-muted">
+                    {member.role}
+                  </p>
+                </div>
               </div>
               <div className="flex shrink-0 gap-3">
                 <Link

@@ -35,6 +35,7 @@ export default async function EditStaffPage({ params }: EditStaffPageProps) {
           role: staffMember.role,
           bio: staffMember.bio,
           serviceIds: staffMember.services.map((s) => s.serviceId),
+          imageUrl: staffMember.imageUrl,
         }}
       />
     </div>

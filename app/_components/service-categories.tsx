@@ -2,45 +2,12 @@
 
 import { motion, type Variants } from "motion/react";
 
-const categories = [
-  {
-    number: "01",
-    title: "Haare",
-    items: [
-      { name: "Schnitt Damen", price: "ab 45 €" },
-      { name: "Schnitt Herren", price: "ab 30 €" },
-      { name: "Coloration", price: "ab 75 €" },
-      { name: "Balayage", price: "ab 120 €" },
-      { name: "Föhnen & Styling", price: "ab 25 €" },
-    ],
-  },
-  {
-    number: "02",
-    title: "Nails",
-    items: [
-      { name: "Maniküre klassisch", price: "ab 35 €" },
-      { name: "Gel-Modellage", price: "ab 55 €" },
-      { name: "Nail Art (Aufpreis)", price: "ab 10 €" },
-    ],
-  },
-  {
-    number: "03",
-    title: "Brows & Lashes",
-    items: [
-      { name: "Augenbrauen zupfen", price: "ab 15 €" },
-      { name: "Brow Lamination", price: "ab 35 €" },
-      { name: "Wimpernlifting", price: "ab 45 €" },
-    ],
-  },
-  {
-    number: "04",
-    title: "Pflege",
-    items: [
-      { name: "Kopfhautbehandlung", price: "ab 30 €" },
-      { name: "Intensiv-Haarkur", price: "ab 20 €" },
-    ],
-  },
-];
+export interface ServiceCategoryData {
+  key: string;
+  number: string;
+  title: string;
+  items: { name: string; price: string }[];
+}
 
 const cardVariants: Variants = {
   hidden: {},
@@ -74,12 +41,16 @@ const listVariants: Variants = {
   },
 };
 
-export function ServiceCategories() {
+interface ServiceCategoriesProps {
+  categories: ServiceCategoryData[];
+}
+
+export function ServiceCategories({ categories }: ServiceCategoriesProps) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {categories.map((category) => (
         <motion.div
-          key={category.title}
+          key={category.key}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}

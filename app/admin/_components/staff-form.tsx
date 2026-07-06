@@ -14,6 +14,7 @@ interface StaffFormProps {
     role: string;
     bio: string | null;
     serviceIds: string[];
+    imageUrl?: string | null;
   };
 }
 
@@ -52,6 +53,32 @@ export function StaffForm({
           placeholder="z. B. Hair Styling & Schnitt"
           className="rounded-xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-accent"
         />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="photo" className="text-sm font-medium text-foreground">
+          Foto
+        </label>
+        {initial?.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={initial.imageUrl}
+            alt=""
+            className="h-24 w-24 rounded-full object-cover"
+          />
+        )}
+        <input
+          id="photo"
+          name="photo"
+          type="file"
+          accept="image/*"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-accent"
+        />
+        {initial?.imageUrl && (
+          <p className="text-xs text-foreground-muted">
+            Leer lassen, um das aktuelle Foto zu behalten.
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
