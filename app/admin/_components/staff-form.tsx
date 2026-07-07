@@ -74,11 +74,10 @@ export function StaffForm({
           accept="image/*"
           className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-accent"
         />
-        {initial?.imageUrl && (
-          <p className="text-xs text-foreground-muted">
-            Leer lassen, um das aktuelle Foto zu behalten.
-          </p>
-        )}
+        <p className="text-xs text-foreground-muted">
+          Max. 8 MB.
+          {initial?.imageUrl && " Leer lassen, um das aktuelle Foto zu behalten."}
+        </p>
       </div>
 
       <div className="flex flex-col gap-1.5">
