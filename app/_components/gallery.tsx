@@ -6,14 +6,70 @@ import { AnimatePresence, motion } from "motion/react";
 const categories = ["Alle", "Haare", "Nägel", "Augenbrauen"];
 
 const images = [
-  { id: 1, label: "Balayage", category: "Haare", height: "h-72" },
-  { id: 2, label: "Hochsteckfrisur", category: "Haare", height: "h-56" },
-  { id: 3, label: "Gel-Nägel", category: "Nägel", height: "h-64" },
-  { id: 4, label: "Augenbrauenlaminierung", category: "Augenbrauen", height: "h-52" },
-  { id: 5, label: "Coloration", category: "Haare", height: "h-80" },
-  { id: 6, label: "Nageldesign", category: "Nägel", height: "h-60" },
-  { id: 7, label: "Wimpernlifting", category: "Augenbrauen", height: "h-64" },
-  { id: 8, label: "Herrenschnitt", category: "Haare", height: "h-56" },
+  {
+    id: 1,
+    label: "Balayage",
+    category: "Haare",
+    height: "h-72",
+    image:
+      "https://images.unsplash.com/photo-1707720531504-ce087725861a?w=600&h=800&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    label: "Hochsteckfrisur",
+    category: "Haare",
+    height: "h-56",
+    image:
+      "https://images.unsplash.com/photo-1769869174682-19e960909bdb?w=600&h=600&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    label: "Gel-Nägel",
+    category: "Nägel",
+    height: "h-64",
+    image:
+      "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&h=700&fit=crop&q=80",
+  },
+  {
+    id: 4,
+    label: "Augenbrauenlaminierung",
+    category: "Augenbrauen",
+    height: "h-52",
+    image:
+      "https://images.unsplash.com/photo-1519415387722-a1c3bbef716c?w=600&h=560&fit=crop&q=80",
+  },
+  {
+    id: 5,
+    label: "Coloration",
+    category: "Haare",
+    height: "h-80",
+    image:
+      "https://images.unsplash.com/photo-1707812343087-c9ff9e5abb43?w=600&h=880&fit=crop&q=80",
+  },
+  {
+    id: 6,
+    label: "Nageldesign",
+    category: "Nägel",
+    height: "h-60",
+    image:
+      "https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?w=600&h=660&fit=crop&q=80",
+  },
+  {
+    id: 7,
+    label: "Wimpernlifting",
+    category: "Augenbrauen",
+    height: "h-64",
+    image:
+      "https://images.unsplash.com/photo-1639629509821-c54cdd984227?w=600&h=700&fit=crop&q=80",
+  },
+  {
+    id: 8,
+    label: "Herrenschnitt",
+    category: "Haare",
+    height: "h-56",
+    image:
+      "https://images.unsplash.com/photo-1635273051937-a0ddef9573b6?w=600&h=600&fit=crop&q=80",
+  },
 ];
 
 export function Gallery() {
@@ -75,7 +131,13 @@ export function Gallery() {
         onClick={() => setSelected(image.id)}
         className={`group relative mb-4 block w-full overflow-hidden rounded-2xl bg-surface ${image.height}`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,var(--accent-soft),transparent_60%),radial-gradient(circle_at_70%_80%,var(--accent),transparent_55%)] transition-transform duration-500 group-hover:scale-110" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image.image}
+          alt={image.label}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent" />
         <span className="absolute bottom-4 left-4 text-sm font-medium text-white drop-shadow">
           {image.label}
         </span>
@@ -107,7 +169,13 @@ export function Gallery() {
               aria-label={selectedImage.label}
               className="relative aspect-4/5 w-full max-w-md overflow-hidden rounded-3xl bg-surface"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,var(--accent-soft),transparent_60%),radial-gradient(circle_at_70%_80%,var(--accent),transparent_55%)]" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={selectedImage.image}
+                alt={selectedImage.label}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent" />
               <span className="absolute bottom-6 left-6 font-display text-2xl text-white drop-shadow">
                 {selectedImage.label}
               </span>

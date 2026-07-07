@@ -26,6 +26,7 @@ const staffMembers = [
     name: "Lena Vogt",
     role: "Salonleitung & Coloration",
     bio: "Seit über zwölf Jahren im Handwerk zu Hause. Lena leitet das Studio und ist auf komplexe Coloration-Techniken spezialisiert.",
+    imageUrl: "https://images.unsplash.com/photo-1699899657680-421c2c2d5064?w=400&h=400&fit=crop&q=80",
     serviceKeys: [
       "schnitt-damen",
       "coloration",
@@ -42,6 +43,7 @@ const staffMembers = [
     name: "Amara Keller",
     role: "Haarstyling & Schnitt",
     bio: "Schneidet seit über zehn Jahren und findet für jede Kopfform den passenden Schnitt — präzise, aber nie steif.",
+    imageUrl: "https://djrct5qhwkmjbd3e.public.blob.vercel-storage.com/staff/3042464b-5d6b-4029-9c7e-1afcfe16996b-36OqKheQ5q.jpg",
     serviceKeys: [
       "schnitt-damen",
       "schnitt-herren",
@@ -60,6 +62,7 @@ const staffMembers = [
     name: "Nora Islam",
     role: "Nägel & Augenbrauen",
     bio: "Präzision im Detail — von natürlichen Augenbrauen bis zu aufwendigem Nageldesign, immer mit Blick fürs Ganze.",
+    imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&q=80",
     serviceKeys: [
       "maniküre",
       "gel-modellage",
@@ -74,6 +77,7 @@ const staffMembers = [
     name: "Jonas Reimer",
     role: "Herrenschnitt & Bartpflege",
     bio: "Klassisch geschult, modern im Blick — für den Schnitt, der auch in zwei Wochen noch sitzt.",
+    imageUrl: "https://images.unsplash.com/photo-1758598305480-176fb2ee4d5c?w=400&h=400&fit=crop&q=80",
     serviceKeys: ["schnitt-herren", "foehnen-styling", "haarkur"],
   },
 ] as const;
@@ -112,7 +116,12 @@ async function main() {
   console.log("Lege Team-Mitglieder inkl. Zuordnungen an…");
   for (const member of staffMembers) {
     const createdStaff = await prisma.staff.create({
-      data: { name: member.name, role: member.role, bio: member.bio },
+      data: {
+        name: member.name,
+        role: member.role,
+        bio: member.bio,
+        imageUrl: member.imageUrl,
+      },
     });
 
     for (const serviceKey of member.serviceKeys) {

@@ -88,6 +88,16 @@ export function SiteFooter() {
             </Link>
           </div>
         </div>
+        <div className="mx-auto max-w-6xl px-6 pb-6">
+          <a
+            href="https://davpin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-muted-on-dark/60 transition-colors hover:text-accent-soft"
+          >
+            Portfolio-Projekt — eigene Buchungswebsite anfragen ↗
+          </a>
+        </div>
       </div>
     </footer>
   );

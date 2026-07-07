@@ -78,8 +78,15 @@ className="max-w-xl font-display text-4xl leading-[1.05] text-foreground sm:text
           <motion.div
             animate={{ y: [0, -14, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="aspect-4/5 w-full rounded-[2rem] bg-surface bg-[radial-gradient(circle_at_30%_20%,var(--accent-soft),transparent_60%),radial-gradient(circle_at_70%_80%,var(--accent),transparent_55%)] shadow-[0_40px_80px_-30px_rgba(28,18,16,0.35)]"
-          />
+            className="aspect-4/5 w-full overflow-hidden rounded-[2rem] bg-surface shadow-[0_40px_80px_-30px_rgba(28,18,16,0.35)]"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://images.unsplash.com/photo-1695527081848-1e46c06e6458?w=800&h=1000&fit=crop&q=80"
+              alt="Heller, moderner Salon-Innenraum von Amara Studio"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
           <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-border bg-surface px-6 py-4 shadow-lg sm:block">
             <p className="font-display text-2xl text-foreground">4.9/5</p>
             <p className="text-xs text-foreground-muted">
