@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NewBookingForm } from "@/app/admin/_components/new-booking-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewBookingPage() {
   const [services, staff] = await Promise.all([
     prisma.service.findMany({ orderBy: { name: "asc" } }),

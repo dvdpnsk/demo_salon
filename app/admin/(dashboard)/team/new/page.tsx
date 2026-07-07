@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { StaffForm } from "@/app/admin/_components/staff-form";
 import { createStaff } from "@/lib/actions/staff";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewStaffPage() {
   const services = await prisma.service.findMany({ orderBy: { name: "asc" } });
 
