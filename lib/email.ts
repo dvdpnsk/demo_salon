@@ -6,7 +6,7 @@ const resend = process.env.RESEND_API_KEY
   : null;
 
 const FROM = process.env.EMAIL_FROM ?? "Amara Studio <onboarding@resend.dev>";
-const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
+const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("de-DE", {
   timeZone: SALON_TIMEZONE,

@@ -4,7 +4,7 @@ import { fraunces, hankenGrotesk } from "@/lib/fonts";
 import { SiteHeader } from "@/app/_components/site-header";
 import { SiteFooter } from "@/app/_components/site-footer";
 
-const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
+const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 const SITE_NAME = "Amara Studio";
 const SITE_DESCRIPTION =
   "Beauty-Studio für Haare, Nails und Brows. Termine einfach online buchen.";
