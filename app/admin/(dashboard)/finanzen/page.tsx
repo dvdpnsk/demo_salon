@@ -123,7 +123,7 @@ export default async function FinanzenPage({
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1">
           {PERIODS.map((p) => (
             <Link
               key={p.value}

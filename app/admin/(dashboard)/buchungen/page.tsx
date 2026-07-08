@@ -75,7 +75,7 @@ export default async function BuchungenPage({
         </Link>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-x-auto pb-1">
         {FILTERS.map((filter) => (
           <Link
             key={filter.value}

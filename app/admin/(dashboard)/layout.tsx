@@ -19,6 +19,9 @@ export default function AdminDashboardLayout({
     <div className="min-h-screen">
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-display text-lg text-foreground">
+            Admin — Amara Studio
+          </span>
           <AdminNav />
           <form action={logout}>
             <button
