@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function createExpense(formData: FormData) {
+  await requireAdmin();
   const categoryId = formData.get("categoryId");
   const note = formData.get("note");
   const amount = formData.get("amount");
@@ -31,6 +33,7 @@ export async function createExpense(formData: FormData) {
 }
 
 export async function deleteExpense(formData: FormData) {
+  await requireAdmin();
   const id = formData.get("id");
   if (typeof id !== "string") return;
   await prisma.expense.delete({ where: { id } });

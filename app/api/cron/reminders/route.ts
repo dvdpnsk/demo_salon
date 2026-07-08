@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendBookingReminderEmail } from "@/lib/email";
@@ -11,12 +12,22 @@ import {
 // für alle bestätigten Termine, die morgen (Kalendertag in der
 // Salon-Zeitzone, nicht der Server-Zeitzone) stattfinden. reminderSentAt
 // verhindert Doppelversand.
+function isAuthorized(request: NextRequest) {
+  const secret = process.env.CRON_SECRET;
+  // Fail closed: ohne konfiguriertes Secret wird der Endpunkt nicht offen.
+  if (!secret) return false;
+
+  const authHeader = request.headers.get("authorization") ?? "";
+  const expected = `Bearer ${secret}`;
+  const a = Buffer.from(authHeader);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
+
 export async function GET(request: NextRequest) {
-  if (process.env.CRON_SECRET) {
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const todayKey = getZonedDateKey(new Date());

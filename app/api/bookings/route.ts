@@ -7,6 +7,11 @@ import {
   StaffServiceMismatchError,
 } from "@/lib/booking";
 import { isValidEmail, isValidName, isValidPhone } from "@/lib/validation";
+import { checkRateLimit, getClientIpFromRequest } from "@/lib/rate-limit";
+
+// Max. 8 Buchungsversuche pro IP in 10 Minuten (gegen Spam / E-Mail-Bombing).
+const BOOKING_LIMIT = 8;
+const BOOKING_WINDOW_SECONDS = 60 * 10;
 
 interface BookingRequestBody {
   serviceId: string;
@@ -20,6 +25,15 @@ interface BookingRequestBody {
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIpFromRequest(request);
+  const rate = checkRateLimit(`booking:${ip}`, BOOKING_LIMIT, BOOKING_WINDOW_SECONDS);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte später erneut versuchen." },
+      { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } }
+    );
+  }
+
   const body = (await request.json()) as Partial<BookingRequestBody>;
 
   if (
@@ -66,6 +80,7 @@ export async function POST(request: NextRequest) {
       staffId: body.staffId,
       startTime,
       customer: body.customer,
+      enforceAvailability: true,
     });
 
     return NextResponse.json(booking, { status: 201 });

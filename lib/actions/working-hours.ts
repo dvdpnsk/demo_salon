@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/admin-auth";
 
 const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
 
@@ -11,6 +12,7 @@ function timeToMinutes(value: string) {
 }
 
 export async function updateWorkingHours(staffId: string, formData: FormData) {
+  await requireAdmin();
   for (const weekday of WEEKDAYS) {
     const isOpen = formData.get(`open-${weekday}`) === "on";
     const start = formData.get(`start-${weekday}`);

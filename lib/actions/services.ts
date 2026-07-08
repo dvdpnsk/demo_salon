@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/admin-auth";
 import { ServiceCategory } from "@/app/generated/prisma/client";
 
 function parseServiceInput(formData: FormData) {
@@ -31,6 +32,7 @@ function parseServiceInput(formData: FormData) {
 }
 
 export async function createService(formData: FormData) {
+  await requireAdmin();
   const data = parseServiceInput(formData);
   await prisma.service.create({ data });
   revalidatePath("/admin/services");
@@ -38,6 +40,7 @@ export async function createService(formData: FormData) {
 }
 
 export async function updateService(id: string, formData: FormData) {
+  await requireAdmin();
   const data = parseServiceInput(formData);
   await prisma.service.update({ where: { id }, data });
   revalidatePath("/admin/services");
@@ -45,6 +48,7 @@ export async function updateService(id: string, formData: FormData) {
 }
 
 export async function deleteService(formData: FormData) {
+  await requireAdmin();
   const id = formData.get("id");
   if (typeof id !== "string") return;
   await prisma.service.delete({ where: { id } });

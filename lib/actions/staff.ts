@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { put } from "@vercel/blob";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/admin-auth";
 
 function parseStaffInput(formData: FormData) {
   const name = formData.get("name");
@@ -30,20 +31,39 @@ function parseStaffInput(formData: FormData) {
   };
 }
 
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
+const MAX_PHOTO_BYTES = 5 * 1024 * 1024; // 5 MB
+
 async function uploadPhotoIfProvided(formData: FormData) {
   const photo = formData.get("photo");
   if (!(photo instanceof File) || photo.size === 0) {
     return undefined;
   }
 
-  const blob = await put(`staff/${crypto.randomUUID()}-${photo.name}`, photo, {
+  const extension = ALLOWED_IMAGE_TYPES[photo.type];
+  if (!extension) {
+    throw new Error("Nur JPEG-, PNG- oder WebP-Bilder sind erlaubt.");
+  }
+  if (photo.size > MAX_PHOTO_BYTES) {
+    throw new Error("Das Bild darf höchstens 5 MB groß sein.");
+  }
+
+  // Zufälliger Dateiname + aus dem MIME-Typ abgeleitete Endung – der vom
+  // Nutzer gelieferte Dateiname fließt bewusst nicht in den Blob-Key ein.
+  const blob = await put(`staff/${crypto.randomUUID()}.${extension}`, photo, {
     access: "public",
+    contentType: photo.type,
   });
 
   return blob.url;
 }
 
 export async function createStaff(formData: FormData) {
+  await requireAdmin();
   const { serviceIds, ...data } = parseStaffInput(formData);
   const imageUrl = await uploadPhotoIfProvided(formData);
 
@@ -62,6 +82,7 @@ export async function createStaff(formData: FormData) {
 }
 
 export async function updateStaff(id: string, formData: FormData) {
+  await requireAdmin();
   const { serviceIds, ...data } = parseStaffInput(formData);
   const imageUrl = await uploadPhotoIfProvided(formData);
 
@@ -83,6 +104,7 @@ export async function updateStaff(id: string, formData: FormData) {
 }
 
 export async function deleteStaff(formData: FormData) {
+  await requireAdmin();
   const id = formData.get("id");
   if (typeof id !== "string") return;
   await prisma.staff.delete({ where: { id } });

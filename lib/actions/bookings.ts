@@ -10,8 +10,10 @@ import {
 } from "@/lib/booking";
 import { isValidEmail, isValidName, isValidPhone } from "@/lib/validation";
 import { parseZonedDateTimeLocal } from "@/lib/timezone";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function createBookingByAdmin(formData: FormData) {
+  await requireAdmin();
   const serviceId = formData.get("serviceId");
   const staffId = formData.get("staffId");
   const startTimeRaw = formData.get("startTime");

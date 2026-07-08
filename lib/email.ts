@@ -27,6 +27,17 @@ const PRICE_FORMATTER = new Intl.NumberFormat("de-DE", {
   currency: "EUR",
 });
 
+// Escaped in die E-Mail interpolierte Werte, damit weder Kunden- noch
+// Admin-gepflegte Namen HTML/Markup in die Mail einschleusen können.
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 interface BookingEmailData {
   customerName: string;
   customerEmail: string;
@@ -59,8 +70,8 @@ function layout(preheader: string, heading: string, bodyHtml: string) {
 function detailsTable(data: BookingEmailData) {
   const rows: [string, string][] = [
     ["Termin", `${DATE_FORMATTER.format(data.startTime)}, ${TIME_FORMATTER.format(data.startTime)} Uhr`],
-    ["Service", data.serviceName],
-    ["Bei", data.staffName],
+    ["Service", escapeHtml(data.serviceName)],
+    ["Bei", escapeHtml(data.staffName)],
     ["Preis", PRICE_FORMATTER.format(data.priceCents / 100)],
   ];
 
@@ -92,7 +103,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData) {
     `Deine Buchung bei Amara Studio ist bestätigt.`,
     "Dein Termin ist bestätigt",
     `
-<p style="margin:0 0 20px;font-family:Arial,sans-serif;font-size:14px;color:#1c1210;">Hallo ${data.customerName}, wir freuen uns auf deinen Besuch:</p>
+<p style="margin:0 0 20px;font-family:Arial,sans-serif;font-size:14px;color:#1c1210;">Hallo ${escapeHtml(data.customerName)}, wir freuen uns auf deinen Besuch:</p>
 ${detailsTable(data)}
 ${manageLink(data.managementToken)}`
   );
@@ -109,7 +120,7 @@ export async function sendBookingReminderEmail(data: BookingEmailData) {
     `Erinnerung: dein Termin bei Amara Studio ist morgen.`,
     "Bis morgen!",
     `
-<p style="margin:0 0 20px;font-family:Arial,sans-serif;font-size:14px;color:#1c1210;">Hallo ${data.customerName}, kurze Erinnerung an deinen Termin morgen:</p>
+<p style="margin:0 0 20px;font-family:Arial,sans-serif;font-size:14px;color:#1c1210;">Hallo ${escapeHtml(data.customerName)}, kurze Erinnerung an deinen Termin morgen:</p>
 ${detailsTable(data)}
 ${manageLink(data.managementToken)}`
   );

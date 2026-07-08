@@ -1,6 +1,24 @@
+import { createHash, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ADMIN_COOKIE_NAME, createSessionToken } from "@/lib/admin-auth";
+import {
+  ADMIN_COOKIE_NAME,
+  SESSION_TTL_SECONDS,
+  createSessionToken,
+} from "@/lib/admin-auth";
+import { checkRateLimit, getClientIp, resetRateLimit } from "@/lib/rate-limit";
+
+// Max. 10 Login-Versuche pro IP in 5 Minuten.
+const LOGIN_LIMIT = 10;
+const LOGIN_WINDOW_SECONDS = 60 * 5;
+
+function passwordsMatch(provided: string, expected: string) {
+  // sha256 normalisiert die Länge, damit timingSafeEqual nicht wirft und
+  // der Vergleich keinen Längen-/Timing-Seitenkanal öffnet.
+  const a = createHash("sha256").update(provided).digest();
+  const b = createHash("sha256").update(expected).digest();
+  return timingSafeEqual(a, b);
+}
 
 interface LoginPageProps {
   searchParams: Promise<{ error?: string }>;
@@ -13,9 +31,23 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
     "use server";
     const password = formData.get("password");
 
-    if (typeof password !== "string" || password !== process.env.ADMIN_PASSWORD) {
+    const ip = await getClientIp();
+    const rate = checkRateLimit(`login:${ip}`, LOGIN_LIMIT, LOGIN_WINDOW_SECONDS);
+    if (!rate.allowed) {
+      redirect("/admin/login?error=locked");
+    }
+
+    const expected = process.env.ADMIN_PASSWORD;
+    if (
+      typeof password !== "string" ||
+      !expected ||
+      !passwordsMatch(password, expected)
+    ) {
       redirect("/admin/login?error=1");
     }
+
+    // Erfolgreicher Login: Zähler für diese IP zurücksetzen.
+    resetRateLimit(`login:${ip}`);
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE_NAME, createSessionToken(), {
@@ -23,7 +55,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: SESSION_TTL_SECONDS,
     });
 
     redirect("/admin");
@@ -57,11 +89,15 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
             />
           </div>
 
-          {error && (
+          {error === "locked" ? (
+            <p className="text-sm text-red-600">
+              Zu viele Versuche. Bitte in einigen Minuten erneut versuchen.
+            </p>
+          ) : error ? (
             <p className="text-sm text-red-600">
               Falsches Passwort. Bitte nochmal versuchen.
             </p>
-          )}
+          ) : null}
 
           <button
             type="submit"
